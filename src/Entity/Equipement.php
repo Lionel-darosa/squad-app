@@ -31,29 +31,22 @@ class Equipement
     private Collection $rooms;
 
     /**
-     * @var Collection<int, Picture>
-     */
-    #[ORM\OneToMany(targetEntity: Picture::class, mappedBy: 'equipement', orphanRemoval: true)]
-    private Collection $pictures;
-
-    /**
-     * @var Collection<int, Document>
-     */
-    #[ORM\OneToMany(targetEntity: Document::class, mappedBy: 'equipement', orphanRemoval: true)]
-    private Collection $documents;
-
-    /**
      * @var Collection<int, Intervention>
      */
     #[ORM\ManyToMany(targetEntity: Intervention::class, mappedBy: 'equipements')]
     private Collection $interventions;
 
+    /**
+     * @var Collection<int, Media>
+     */
+    #[ORM\OneToMany(targetEntity: Media::class, mappedBy: 'equipement', orphanRemoval: true)]
+    private Collection $medias;
+
     public function __construct()
     {
         $this->rooms = new ArrayCollection();
-        $this->pictures = new ArrayCollection();
-        $this->documents = new ArrayCollection();
         $this->interventions = new ArrayCollection();
+        $this->medias = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -122,66 +115,6 @@ class Equipement
     }
 
     /**
-     * @return Collection<int, Picture>
-     */
-    public function getPictures(): Collection
-    {
-        return $this->pictures;
-    }
-
-    public function addPicture(Picture $picture): static
-    {
-        if (!$this->pictures->contains($picture)) {
-            $this->pictures->add($picture);
-            $picture->setEquipement($this);
-        }
-
-        return $this;
-    }
-
-    public function removePicture(Picture $picture): static
-    {
-        if ($this->pictures->removeElement($picture)) {
-            // set the owning side to null (unless already changed)
-            if ($picture->getEquipement() === $this) {
-                $picture->setEquipement(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Document>
-     */
-    public function getDocuments(): Collection
-    {
-        return $this->documents;
-    }
-
-    public function addDocument(Document $document): static
-    {
-        if (!$this->documents->contains($document)) {
-            $this->documents->add($document);
-            $document->setEquipement($this);
-        }
-
-        return $this;
-    }
-
-    public function removeDocument(Document $document): static
-    {
-        if ($this->documents->removeElement($document)) {
-            // set the owning side to null (unless already changed)
-            if ($document->getEquipement() === $this) {
-                $document->setEquipement(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
      * @return Collection<int, Intervention>
      */
     public function getInterventions(): Collection
@@ -203,6 +136,36 @@ class Equipement
     {
         if ($this->interventions->removeElement($intervention)) {
             $intervention->removeEquipement($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Media>
+     */
+    public function getMedias(): Collection
+    {
+        return $this->medias;
+    }
+
+    public function addMedia(Media $media): static
+    {
+        if (!$this->medias->contains($media)) {
+            $this->medias->add($media);
+            $media->setEquipement($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMedia(Media $media): static
+    {
+        if ($this->medias->removeElement($media)) {
+            // set the owning side to null (unless already changed)
+            if ($media->getEquipement() === $this) {
+                $media->setEquipement(null);
+            }
         }
 
         return $this;

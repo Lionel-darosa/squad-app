@@ -7,22 +7,34 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\UX\Turbo\Attribute\Broadcast;
 
 #[ORM\Entity(repositoryClass: InterventionRepository::class)]
-#[Broadcast]
 class Intervention
 {
+    public const INTERVENTION = [
+        'type' => [
+            'intervention suite alarme Taiko',
+            'prise d appel',
+            'intervention préventive',
+            'demande par mail',
+        ],
+        'resolved' => [
+            'oui',
+            'oui par site',
+            'partiellement',
+            'non',
+        ],
+        'canceled' => [
+            'oui',
+            'non',
+            'pas de clients',
+        ]
+    ];
+    
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
-
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
-    private ?\DateTimeInterface $date = null;
-
-    #[ORM\Column(type: Types::TIME_MUTABLE)]
-    private ?\DateTimeInterface $time = null;
 
     #[ORM\ManyToOne(inversedBy: 'interventions')]
     #[ORM\JoinColumn(nullable: false)]
@@ -55,6 +67,9 @@ class Intervention
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
 
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    private ?\DateTimeInterface $dateTime = null;
+
     public function __construct()
     {
         $this->rooms = new ArrayCollection();
@@ -64,30 +79,6 @@ class Intervention
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getDate(): ?\DateTimeInterface
-    {
-        return $this->date;
-    }
-
-    public function setDate(\DateTimeInterface $date): static
-    {
-        $this->date = $date;
-
-        return $this;
-    }
-
-    public function getTime(): ?\DateTimeInterface
-    {
-        return $this->time;
-    }
-
-    public function setTime(\DateTimeInterface $time): static
-    {
-        $this->time = $time;
-
-        return $this;
     }
 
     public function getTech(): ?Tech
@@ -206,6 +197,18 @@ class Intervention
     public function setDescription(?string $description): static
     {
         $this->description = $description;
+
+        return $this;
+    }
+
+    public function getDateTime(): ?\DateTimeInterface
+    {
+        return $this->dateTime;
+    }
+
+    public function setDateTime(\DateTimeInterface $dateTime): static
+    {
+        $this->dateTime = $dateTime;
 
         return $this;
     }

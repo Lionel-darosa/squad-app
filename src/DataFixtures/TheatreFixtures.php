@@ -8,7 +8,7 @@ use Doctrine\Persistence\ObjectManager;
 
 class TheatreFixtures extends Fixture
 {
-    public const THEATERS = [
+    public const THEATRES = [
         ["name"=> "Aquaboulevard", "location"=> "Paris"],
         ["name"=> "Wepler", "location"=> "Paris"],
         ["name"=> "Chavant", "location"=> "Orleans"],
@@ -19,13 +19,13 @@ class TheatreFixtures extends Fixture
     ];
     public function load(ObjectManager $manager): void
     {
-        foreach (self::THEATERS as $theaterData) {
-            $theater = new Theatre();
-            $theater->setName($theaterData["name"]);
-            $theater->setLocation($theaterData["location"]);
-            $manager->persist($theater);
+        foreach (self::THEATRES as $theatreData) {
+            $theatre = new Theatre();
+            $theatre->setName($theatreData["name"]);
+            $theatre->setLocation($theatreData["location"]);
+            $manager->persist($theatre);
 
-            $this->addReference('theater_' . $theaterData['name'], $theater);
+            $this->addReference('theatre_' . $theatreData['name'], $theatre);
         }
         // $product = new Product();
         // $manager->persist($product);

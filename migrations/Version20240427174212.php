@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20240412101651 extends AbstractMigration
+final class Version20240427174212 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -22,7 +22,7 @@ final class Version20240412101651 extends AbstractMigration
         // this up() migration is auto-generated, please modify it to your needs
         $this->addSql('CREATE TABLE equipement (id INT AUTO_INCREMENT NOT NULL, type VARCHAR(255) NOT NULL, brand VARCHAR(255) NOT NULL, name VARCHAR(255) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE equipement_room (equipement_id INT NOT NULL, room_id INT NOT NULL, INDEX IDX_9D43C8AB806F0F5C (equipement_id), INDEX IDX_9D43C8AB54177093 (room_id), PRIMARY KEY(equipement_id, room_id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
-        $this->addSql('CREATE TABLE intervention (id INT AUTO_INCREMENT NOT NULL, tech_id INT NOT NULL, contact TINYINT(1) DEFAULT NULL, type VARCHAR(100) DEFAULT NULL, resolved VARCHAR(50) DEFAULT NULL, canceled VARCHAR(20) DEFAULT NULL, description LONGTEXT DEFAULT NULL, date_time DATETIME NOT NULL, INDEX IDX_D11814AB64727BFC (tech_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE intervention (id INT AUTO_INCREMENT NOT NULL, tech_id INT NOT NULL, theatre_id INT DEFAULT NULL, contact TINYINT(1) DEFAULT NULL, type VARCHAR(100) DEFAULT NULL, resolved VARCHAR(50) DEFAULT NULL, canceled VARCHAR(20) DEFAULT NULL, description LONGTEXT DEFAULT NULL, date_time DATETIME NOT NULL, INDEX IDX_D11814AB64727BFC (tech_id), INDEX IDX_D11814ABC80060CD (theatre_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE intervention_room (intervention_id INT NOT NULL, room_id INT NOT NULL, INDEX IDX_7D2049598EAE3863 (intervention_id), INDEX IDX_7D20495954177093 (room_id), PRIMARY KEY(intervention_id, room_id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE intervention_equipement (intervention_id INT NOT NULL, equipement_id INT NOT NULL, INDEX IDX_FA49BCFE8EAE3863 (intervention_id), INDEX IDX_FA49BCFE806F0F5C (equipement_id), PRIMARY KEY(intervention_id, equipement_id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE media (id INT AUTO_INCREMENT NOT NULL, equipement_id INT NOT NULL, name VARCHAR(150) NOT NULL, type VARCHAR(100) NOT NULL, file VARCHAR(255) NOT NULL, INDEX IDX_6A2CA10C806F0F5C (equipement_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
@@ -34,6 +34,7 @@ final class Version20240412101651 extends AbstractMigration
         $this->addSql('ALTER TABLE equipement_room ADD CONSTRAINT FK_9D43C8AB806F0F5C FOREIGN KEY (equipement_id) REFERENCES equipement (id) ON DELETE CASCADE');
         $this->addSql('ALTER TABLE equipement_room ADD CONSTRAINT FK_9D43C8AB54177093 FOREIGN KEY (room_id) REFERENCES room (id) ON DELETE CASCADE');
         $this->addSql('ALTER TABLE intervention ADD CONSTRAINT FK_D11814AB64727BFC FOREIGN KEY (tech_id) REFERENCES tech (id)');
+        $this->addSql('ALTER TABLE intervention ADD CONSTRAINT FK_D11814ABC80060CD FOREIGN KEY (theatre_id) REFERENCES theatre (id)');
         $this->addSql('ALTER TABLE intervention_room ADD CONSTRAINT FK_7D2049598EAE3863 FOREIGN KEY (intervention_id) REFERENCES intervention (id) ON DELETE CASCADE');
         $this->addSql('ALTER TABLE intervention_room ADD CONSTRAINT FK_7D20495954177093 FOREIGN KEY (room_id) REFERENCES room (id) ON DELETE CASCADE');
         $this->addSql('ALTER TABLE intervention_equipement ADD CONSTRAINT FK_FA49BCFE8EAE3863 FOREIGN KEY (intervention_id) REFERENCES intervention (id) ON DELETE CASCADE');
@@ -49,6 +50,7 @@ final class Version20240412101651 extends AbstractMigration
         $this->addSql('ALTER TABLE equipement_room DROP FOREIGN KEY FK_9D43C8AB806F0F5C');
         $this->addSql('ALTER TABLE equipement_room DROP FOREIGN KEY FK_9D43C8AB54177093');
         $this->addSql('ALTER TABLE intervention DROP FOREIGN KEY FK_D11814AB64727BFC');
+        $this->addSql('ALTER TABLE intervention DROP FOREIGN KEY FK_D11814ABC80060CD');
         $this->addSql('ALTER TABLE intervention_room DROP FOREIGN KEY FK_7D2049598EAE3863');
         $this->addSql('ALTER TABLE intervention_room DROP FOREIGN KEY FK_7D20495954177093');
         $this->addSql('ALTER TABLE intervention_equipement DROP FOREIGN KEY FK_FA49BCFE8EAE3863');

@@ -15,15 +15,17 @@ class InterventionFixtures extends Fixture implements DependentFixtureInterface
     {
         $faker = Factory::create();
         $techs = UserFixtures::USERS;
-        $theaters = TheatreFixtures::THEATERS;
+        $theatres = TheatreFixtures::THEATRES;
         $equipements = EquipementFixtures::EQUIPEMENTS;
         $interventionResponse = Intervention::INTERVENTION;
         for ($i = 0; $i < 200; $i++) {
             $equipementInjured = $equipements[$faker->randomKey($equipements)][$faker->numberBetween(0, 3)];
+            $theatre = $theatres[$faker->numberBetween(0, 6)]['name'];
             $intervention = new Intervention();
             $intervention->setDateTime($faker->dateTimeBetween('-3 month', 'now'))
                 ->setTech($this->getReference('tech_' . $techs[$faker->numberBetween(0, 3)]['email']))
-                ->addRoom($this->getReference('theater_' . $theaters[$faker->numberBetween(0, 6)]['name'] . '_room_' . $faker->numberBetween(1, 12)))
+                ->setTheatre($this->getReference('theatre_' . $theatre))
+                ->addRoom($this->getReference('theatre_' . $theatre . '_room_' . $faker->numberBetween(1, 12)))
                 ->addEquipement($this->getReference('brand_' . $equipementInjured['brand'] . '_name_' . $equipementInjured['name']))
                 ->setContact($faker->randomElement([1, 0]))
                 ->setType($faker->randomElement($interventionResponse['type']))

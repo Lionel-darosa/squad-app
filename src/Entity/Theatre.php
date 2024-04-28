@@ -27,9 +27,16 @@ class Theatre
     #[ORM\OneToMany(targetEntity: Room::class, mappedBy: 'theatre')]
     private Collection $rooms;
 
+    /**
+     * @var Collection<int, Intervention>
+     */
+    #[ORM\OneToMany(targetEntity: Intervention::class, mappedBy: 'theatre')]
+    private Collection $interventions;
+
     public function __construct()
     {
         $this->rooms = new ArrayCollection();
+        $this->interventions = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -85,6 +92,36 @@ class Theatre
             // set the owning side to null (unless already changed)
             if ($room->getTheatre() === $this) {
                 $room->setTheatre(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Intervention>
+     */
+    public function getInterventions(): Collection
+    {
+        return $this->interventions;
+    }
+
+    public function addIntervention(Intervention $intervention): static
+    {
+        if (!$this->interventions->contains($intervention)) {
+            $this->interventions->add($intervention);
+            $intervention->setTheatre($this);
+        }
+
+        return $this;
+    }
+
+    public function removeIntervention(Intervention $intervention): static
+    {
+        if ($this->interventions->removeElement($intervention)) {
+            // set the owning side to null (unless already changed)
+            if ($intervention->getTheatre() === $this) {
+                $intervention->setTheatre(null);
             }
         }
 

@@ -14,12 +14,12 @@ class RoomFixtures extends Fixture implements DependentFixtureInterface
     {
         $faker = Factory::create();
         $equipement = EquipementFixtures::EQUIPEMENTS;
-        $theaters = TheatreFixtures::THEATERS;
-        foreach ($theaters as $theater) {
+        $theatres = TheatreFixtures::THEATRES;
+        foreach ($theatres as $theatre) {
             for ($i = 1; $i < 13; $i++) {
                 $room = new Room();
                 $room->setNumber($i);
-                $room->setTheatre($this->getReference('theater_' . $theater['name']));
+                $room->setTheatre($this->getReference('theatre_' . $theatre['name']));
 
                 $projector = $equipement['projector'][$faker->numberBetween(0, 3)];
                 $room->addEquipement($this->getReference('brand_' . $projector['brand'] . '_name_' . $projector['name']));
@@ -31,7 +31,7 @@ class RoomFixtures extends Fixture implements DependentFixtureInterface
                 $room->addEquipement($this->getReference('brand_' . $soundProcessor['brand'] . '_name_' . $soundProcessor['name']));
 
                 $manager->persist($room);
-                $this->addReference('theater_' . $theater['name'] . '_room_' . $room->getNumber(), $room);
+                $this->addReference('theatre_' . $theatre['name'] . '_room_' . $room->getNumber(), $room);
             };
         };
 

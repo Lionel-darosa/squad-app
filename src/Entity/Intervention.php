@@ -40,6 +40,9 @@ class Intervention
     #[ORM\JoinColumn(nullable: false)]
     private ?Tech $tech = null;
 
+    #[ORM\ManyToOne(inversedBy: 'interventions')]
+    private ?Theatre $theatre = null;
+
     /**
      * @var Collection<int, Room>
      */
@@ -209,6 +212,18 @@ class Intervention
     public function setDateTime(\DateTimeInterface $dateTime): static
     {
         $this->dateTime = $dateTime;
+
+        return $this;
+    }
+
+    public function getTheatre(): ?Theatre
+    {
+        return $this->theatre;
+    }
+
+    public function setTheatre(?Theatre $theatre): static
+    {
+        $this->theatre = $theatre;
 
         return $this;
     }
